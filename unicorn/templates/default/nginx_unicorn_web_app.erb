@@ -55,6 +55,10 @@ server {
       add_header Cache-Control "public";
       break;
     }
+
+    location ~ ^/assets/  {
+      try_files $uri;
+    }
   <% end %>
 
   location @unicorn {
@@ -89,17 +93,6 @@ server {
     root <%= @application[:absolute_document_root] %>;
   }
 }
-
-<% if @application[:absolute_document_root] == '/srv/www/oliver/current/public/' && ::File.exists?("/srv/www/ssl/oliver.public.pem") %>
-  server {
-    listen 443 ssl;
-  
-    ssl_certificate /srv/www/ssl/oliver.public.pem;
-    ssl_certificate_key /srv/www/ssl/oliver.key;
-  
-    return 301 https://www.$host$request_uri;
-  }
-<% end %>
 
 <% if @application[:ssl_support] %>
 server {
