@@ -4,6 +4,7 @@ upstream unicorn_<%= @application[:domains].first %> {
 
 server {
   
+  # NowSignage / EventBeat specific Unicorn-overridden nginx config:
   # Application Name: <%= @application_name %>, Environment: <%= @application[:rails_env] %>
 
   disable_symlinks off;
@@ -36,22 +37,24 @@ server {
     try_files $uri/index.html $uri/index.htm @unicorn;
   }
 
-  <% if @application[:absolute_document_root] == '/srv/www/oliver/current/public/' %>
-    <% if @application[:rails_env] == 'remote_development' %>
-      # DON'T CACHE ALL THE THINGS
-    <% else %>
-      location ~* \.(?:eot|ttf|woff)$ {
-        add_header Access-Control-Allow-Origin *;
-        expires 1y;
-        add_header Cache-Control "public";
-      }
+  <% if @application[:absolute_document_root] == '/srv/www/eventbeat/current/public/' %>
+    location ~* \.(?:eot|ttf|woff)$ {
+      add_header Access-Control-Allow-Origin *;
+      expires 1y;
+      add_header Cache-Control "public";
+    }
 
-      location ~* /(production|staging|assets|javascripts|chosen)/.*.(jpg|jpeg|png|gif|svg|ico|css|js)$ {
-        expires 1y;
-        add_header Cache-Control "public";
-        break;
-      }
-    <% end %>
+    location ~* /(dist)/.*.(js|css)$ {
+      expires 86400s;
+      add_header Cache-Control "public";
+      break;
+    }
+
+    location ~* /(production|staging|assets|javascripts|chosen)/.*.(jpg|jpeg|png|gif|svg|ico|css|js)$ {
+      expires 1y;
+      add_header Cache-Control "public";
+      break;
+    }
   <% end %>
 
   location @unicorn {
