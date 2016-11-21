@@ -38,7 +38,7 @@ server {
   }
 
   <% if @application[:absolute_document_root] == '/srv/www/eventbeat/current/public/' %>
-    location ~ ^/sidekiq/(assets)/ {
+    location ~ ^/sidekiq/(stylesheets|javascripts)/ {
       try_files $uri @unicorn;
       break;
     }
