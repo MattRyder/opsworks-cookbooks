@@ -39,7 +39,7 @@ server {
 
   <% if @application[:absolute_document_root] == '/srv/www/eventbeat/current/public/' %>
     location ~ ^/sidekiq/(stylesheets|javascripts)/ {
-      try_files $uri @unicorn;
+      try_files @unicorn;
     }
 
     location ~* \.(?:eot|ttf|woff)$ {
