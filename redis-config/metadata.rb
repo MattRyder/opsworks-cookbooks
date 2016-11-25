@@ -4,4 +4,4 @@ license          "MIT"
 description      "Configure and deploy Elasticache to a Rails instance"
 
 name   'redis-config'
-recipe 'redis-config::generate',     'Set up the Elasticache node cluster information.'
+recipe 'redis-config::configure',     'Configure the Elasticache node cluster information.'
