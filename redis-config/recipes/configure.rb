@@ -16,7 +16,7 @@ node[:deploy].each do |app_name, deploy_config|
     # define variable “@redis” to be used in the ERB template
     variables(redis: deploy_config[:redis] || {})
 
-    notifies :run, resources(:execute => "restart Rails app #{application}")
+    notifies :run, resources(:execute => "restart Rails app #{app_name}")
 
     only_if do
       File.exists?(deploy[:deploy_to]) && File.exists?("#{deploy[:deploy_to]}/shared/config/")
