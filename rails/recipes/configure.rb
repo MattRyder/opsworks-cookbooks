@@ -41,7 +41,7 @@ node[:deploy].each do |application, deploy|
     notifies :run, "execute[restart Rails app #{application}]"
 
     only_if do
-      deploy[:memcached][:host].present? && File.directory?("#{deploy[:deploy_to]}/shared/config/")
+      deploy.has_key?(:memcached) && deploy[:memcached].has_key?(:host) && File.directory?("#{deploy[:deploy_to]}/shared/config/")
     end
   end
 end
